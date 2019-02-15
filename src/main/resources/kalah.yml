@@ -1,0 +1,78 @@
+openapi: 3.0.0
+info:
+  title: Kalah API
+  description: Rest endpoints for playing the game Kalah
+  version: 0.0.1
+servers:
+  - url: http://localhost/v1
+    description: Spin up locally
+paths:
+  /games:
+    post:
+      summary: Create a new game
+      description: Endpoint that creates Kalah games, returning a game Id
+      operationId: createGame
+      responses:
+        '201':
+          description: A game descriptor response containing the game Id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameDescriptor'
+  /games/{gameId}/pit/{pitId}:
+    put:
+      summary: Play a move
+      description: Creates a move on the given game, in the given pit, and returns the game state
+      operationId: playMove
+      parameters:
+        - in: path
+          name: gameId
+          description: The number of the game for the move
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pitId
+          description: The number of the pit to play
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Current state of the game board
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameState'
+
+components:
+  schemas:
+    GameDescriptor:
+      properties:
+        id:
+          description: The id of the game
+          type: string
+        uri:
+          description: The uri of the game
+          type: string
+      required:
+        - id
+        - uri
+    GameState:
+      properties:
+        id:
+          description: The id of the game
+          type: string
+        url:
+          description: The url of the game
+          type: string
+        state:
+          description: The current count of the seeds in each pit
+          type: object
+          additionalProperties:
+            type: string
+      required:
+        - id
+        - url
+        - state
+
