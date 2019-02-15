@@ -1,7 +1,7 @@
 package com.morgan.kalah.service;
 
-import com.morgan.kalah.api.GamesApiController;
 import com.morgan.kalah.api.GamesApiDelegate;
+import com.morgan.kalah.exception.GameNotFoundException;
 import com.morgan.kalah.model.Game;
 import com.morgan.kalah.model.GameDescriptor;
 import com.morgan.kalah.model.GameState;
@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.context.request.NativeWebRequest;
+
+import java.util.HashMap;
 
 @Component
 public class KalahService implements GamesApiDelegate {
@@ -35,6 +34,11 @@ public class KalahService implements GamesApiDelegate {
 
     @Override
     public ResponseEntity<GameState> playMove(String gameId, String pitId) {
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        Game game = kalahRepository.getGame(gameId).orElseThrow(() -> new GameNotFoundException(gameId));
+        GameState gameState = new GameState();
+        gameState.setId(String.valueOf(game.getId()));
+        gameState.setState(new HashMap<>());
+        gameState.setUrl("https://localhost:8080/" + gameId);
+        return new ResponseEntity<>(gameState, HttpStatus.OK);
     }
 }

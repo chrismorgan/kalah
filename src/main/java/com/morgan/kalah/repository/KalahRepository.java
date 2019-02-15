@@ -27,7 +27,7 @@ public class KalahRepository {
     }
 
     public Optional<Game> getGame(String gameId) {
-        return Optional.of(gameRepository.get(gameId));
+        return Optional.of(gameRepository.get(Long.valueOf(gameId)));
     }
 
     public Game update(Game game) {
