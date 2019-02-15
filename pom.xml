@@ -12,11 +12,13 @@
     <artifactId>kalah</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>kalah</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Kalah</description>
 
     <properties>
         <java.version>1.8</java.version>
         <openapi-generator.version>3.3.4</openapi-generator.version>
+        <springfox-swagger.version>2.8.0</springfox-swagger.version>
+        <lombok.version>1.18.4</lombok.version>
     </properties>
 
     <dependencies>
@@ -39,19 +41,26 @@
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
-            <version>2.8.0</version>
+            <version>${springfox-swagger.version}</version>
         </dependency>
 
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
-            <version>2.8.0</version>
+            <version>${springfox-swagger.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.openapitools</groupId>
             <artifactId>openapi-generator</artifactId>
             <version>${openapi-generator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -74,21 +83,22 @@
                         <configuration>
                             <inputSpec>${project.basedir}/src/main/resources/kalah.yml</inputSpec>
                             <validateSpec>true</validateSpec>
-                            <!--<output>${project.build.directory}/generated-sources</output>-->
                             <modelPackage>${project.groupId}.${project.artifactId}.model</modelPackage>
-                            <invokerPackage>${project.groupId}.${project.artifactId}.invoker</invokerPackage>
                             <apiPackage>${project.groupId}.${project.artifactId}.api</apiPackage>
                             <configOptions>
+                                <interfaceOnly>false</interfaceOnly>
+                                <delegatePattern>true</delegatePattern>
                                 <useBeanValidation>true</useBeanValidation>
                                 <performBeanValidation>true</performBeanValidation>
                                 <library>spring-boot</library>
                                 <dateLibrary>java8</dateLibrary>
                                 <hideGenerationTimestamp>true</hideGenerationTimestamp>
                                 <title>Kalah</title>
-                                <java8>true</java8>
+                                <java8>false</java8>
                                 <configPackage>${project.groupId}.${project.artifactId}.configuration</configPackage>
                             </configOptions>
-                            <!--<configHelp>true</configHelp>-->
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <supportingFilesToGenerate>HomeController.java,OpenAPIDocumentationConfig.java</supportingFilesToGenerate>
                             <generatorName>spring</generatorName>
                             <generateApis>true</generateApis>
                             <generateApiTests>true</generateApiTests>
