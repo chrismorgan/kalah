@@ -6,6 +6,7 @@ import com.morgan.kalah.model.Game;
 import com.morgan.kalah.model.GameDescriptor;
 import com.morgan.kalah.model.GameState;
 import com.morgan.kalah.repository.KalahRepository;
+import com.morgan.kalah.rules.RuleChain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.http.HttpStatus;
@@ -21,13 +22,17 @@ public class KalahService implements GamesApiDelegate {
 
     private final KalahGameFactory kalahGameFactory;
 
+    private final RuleChain ruleChain;
+
     @Autowired
     public KalahService(KalahRepository kalahRepository,
                         ConversionService conversionService,
-                        KalahGameFactory kalahGameFactory) {
+                        KalahGameFactory kalahGameFactory,
+                        RuleChain ruleChain) {
         this.kalahRepository = kalahRepository;
         this.conversionService = conversionService;
         this.kalahGameFactory = kalahGameFactory;
+        this.ruleChain = ruleChain;
     }
 
     @Override
@@ -41,11 +46,7 @@ public class KalahService implements GamesApiDelegate {
     public ResponseEntity<GameState> playMove(String gameId, String pitId) {
         Game game = kalahRepository.getGame(gameId).orElseThrow(() -> new GameNotFoundException(gameId));
 
-        //Validate move
-
-        //Play move
-
-        //Save state
+        game = ruleChain.getRules().applyRule(game, Integer.valueOf(pitId));
 
         GameState gameState = conversionService.convert(game, GameState.class);
         return new ResponseEntity<>(gameState, HttpStatus.OK);

@@ -26,14 +26,14 @@ public class GameConfiguration {
 
     @Min(4)
     @Max(6)
-    private int stones;
+    private int seeds;
 
     @NotNull
     @Min(1)
-    private int player1Kalah;
+    private int northPlayerKalah;
 
     @NotNull
     @Min(1)
-    private int player2Kalah;
+    private int southPlayerKalah;
 
 }

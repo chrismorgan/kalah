@@ -24,7 +24,7 @@ public class KalahGameFactory {
 
     public Game createGame() {
         Game game = new Game();
-        game.setActivePlayer(Player.ONE);
+        game.setActivePlayer(Player.NORTH);
         Map<Integer, Integer> state = IntStream.rangeClosed(1, gameConfiguration.getPits())
                 .boxed()
                 .collect(Collectors.toMap(identity(), integer -> getStonesForPit(integer)));
@@ -33,10 +33,10 @@ public class KalahGameFactory {
     }
 
     private Integer getStonesForPit(int pitId) {
-        if (pitId == gameConfiguration.getPlayer1Kalah() || pitId == gameConfiguration.getPlayer2Kalah()) {
+        if (pitId == gameConfiguration.getNorthPlayerKalah() || pitId == gameConfiguration.getSouthPlayerKalah()) {
             return 0;
         } else {
-            return gameConfiguration.getStones();
+            return gameConfiguration.getSeeds();
         }
     }
 }
