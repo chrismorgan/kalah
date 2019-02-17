@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @Repository
 public class KalahRepository {
 
-    private final Map<Long, Game> gameRepository;
+    private final Map<String, Game> gameRepository;
     private final AtomicLong gameCounter = new AtomicLong();
 
     public KalahRepository() {
@@ -19,15 +19,15 @@ public class KalahRepository {
     }
 
     public Game addGame(Game game) {
-        Long gameId = gameCounter.incrementAndGet();
-        game.setId(gameId);
+        String gameIdStr = getNewGameId();
+        game.setId(gameIdStr);
 
-        gameRepository.put(gameId, game);
+        gameRepository.put(gameIdStr, game);
         return game;
     }
 
     public Optional<Game> getGame(String gameId) {
-        return Optional.of(gameRepository.get(Long.valueOf(gameId)));
+        return Optional.ofNullable(gameRepository.get(gameId));
     }
 
     public Game update(Game game) {
@@ -35,5 +35,10 @@ public class KalahRepository {
         return game;
     }
 
+    private String getNewGameId() {
+        Long gameId = gameCounter.incrementAndGet();
+        return String.valueOf(gameId);
+
+    }
 
 }

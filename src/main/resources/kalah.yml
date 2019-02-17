@@ -4,7 +4,7 @@ info:
   description: Rest endpoints for playing the game Kalah
   version: 0.0.1
 servers:
-  - url: http://localhost/v1
+  - url: http://localhost
     description: Spin up locally
 paths:
   /games:
@@ -19,7 +19,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GameDescriptor'
-  /games/{gameId}/pit/{pitId}:
+  /games/{gameId}/pits/{pitId}:
     put:
       summary: Play a move
       description: Creates a move on the given game, in the given pit, and returns the game state
@@ -44,7 +44,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GameState'
-
+        '400':
+          description: Cannot find board or pit
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
 components:
   schemas:
     GameDescriptor:
@@ -75,4 +80,11 @@ components:
         - id
         - url
         - state
+    ErrorMessage:
+      properties:
+        message:
+          description: The errot that happened
+          type: string
+      required:
+        - message
 
