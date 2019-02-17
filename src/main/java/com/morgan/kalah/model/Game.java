@@ -10,5 +10,5 @@ public class Game {
 
     private String id;
     private Player activePlayer = Player.ONE;
-    private Map<Integer, Integer> state = new HashMap<>(6);
+    private Map<Integer, Integer> state = new HashMap<>();
 }

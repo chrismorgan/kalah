@@ -25,10 +25,18 @@ public class KalahGameFactory {
     public Game createGame() {
         Game game = new Game();
         game.setActivePlayer(Player.ONE);
-        Map<Integer, Integer> state = IntStream.rangeClosed(1, gameConfiguration.getPitsize())
+        Map<Integer, Integer> state = IntStream.rangeClosed(1, gameConfiguration.getPits())
                 .boxed()
-                .collect(Collectors.toMap(identity(), integer -> 0));
+                .collect(Collectors.toMap(identity(), integer -> getStonesForPit(integer)));
         game.setState(state);
         return game;
+    }
+
+    private Integer getStonesForPit(int pitId) {
+        if (pitId == gameConfiguration.getPlayer1Kalah() || pitId == gameConfiguration.getPlayer2Kalah()) {
+            return 0;
+        } else {
+            return gameConfiguration.getStones();
+        }
     }
 }

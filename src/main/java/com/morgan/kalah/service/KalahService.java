@@ -17,9 +17,9 @@ public class KalahService implements GamesApiDelegate {
 
     private final KalahRepository kalahRepository;
 
-    private ConversionService conversionService;
+    private final ConversionService conversionService;
 
-    private KalahGameFactory kalahGameFactory;
+    private final KalahGameFactory kalahGameFactory;
 
     @Autowired
     public KalahService(KalahRepository kalahRepository,
@@ -32,7 +32,7 @@ public class KalahService implements GamesApiDelegate {
 
     @Override
     public ResponseEntity<GameDescriptor> createGame(){
-        Game game = kalahRepository.addGame(kalahGameFactory.newGame());
+        Game game = kalahRepository.addGame(kalahGameFactory.createGame());
         GameDescriptor gameDescriptor = conversionService.convert(game, GameDescriptor.class);
         return new ResponseEntity<>(gameDescriptor, HttpStatus.CREATED);
     }
