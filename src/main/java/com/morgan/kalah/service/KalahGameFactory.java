@@ -22,7 +22,7 @@ public class KalahGameFactory {
         this.gameConfiguration = gameConfiguration;
     }
 
-    public Game newGame() {
+    public Game createGame() {
         Game game = new Game();
         game.setActivePlayer(Player.ONE);
         Map<Integer, Integer> state = IntStream.rangeClosed(1, gameConfiguration.getPitsize())
