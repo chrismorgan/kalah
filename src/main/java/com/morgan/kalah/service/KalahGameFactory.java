@@ -27,8 +27,9 @@ public class KalahGameFactory {
         game.setActivePlayer(Player.NORTH);
         Map<Integer, Integer> state = IntStream.rangeClosed(1, gameConfiguration.getPits())
                 .boxed()
-                .collect(Collectors.toMap(identity(), integer -> getStonesForPit(integer)));
+                .collect(Collectors.toMap(identity(), this::getStonesForPit));
         game.setState(state);
+        game.setLastPitPlayed(0);
         return game;
     }
 

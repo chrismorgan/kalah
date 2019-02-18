@@ -11,4 +11,5 @@ public class Game {
     private String id;
     private Player activePlayer = Player.NORTH;
     private Map<Integer, Integer> state = new HashMap<>();
+    private int lastPitPlayed;
 }

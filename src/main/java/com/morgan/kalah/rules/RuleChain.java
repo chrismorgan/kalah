@@ -1,23 +1,43 @@
 package com.morgan.kalah.rules;
 
+import com.morgan.kalah.configuration.GameConfiguration;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RuleChain {
 
+    @Autowired
+    private GameConfiguration gameConfiguration;
+
+    @Bean
     public Rule getRules() {
         return validMoveRule();
     }
 
-    private Rule validMoveRule() {
-        return new ValidMoveForPlayerRule(emptyPitRule());
+    @Bean
+    public Rule validMoveRule() {
+        return new ValidMoveForPlayerRule(emptyPitRule(), gameConfiguration);
     }
 
-    private Rule emptyPitRule() {
+    @Bean
+    public Rule emptyPitRule() {
         return new EmptyPitRule(moveSeedsRule());
     }
 
-    private Rule moveSeedsRule() {
-        return new MoveSeedsRule(null);
+    @Bean
+    public Rule moveSeedsRule() {
+        return new MoveSeedsRule(captureSeedsRule(), gameConfiguration);
+    }
+
+    @Bean
+    public Rule captureSeedsRule() {
+        return new CapturedSeedsRule(nextPlayerRule(), gameConfiguration);
+    }
+
+    @Bean
+    public Rule nextPlayerRule() {
+        return new NextPlayerRule(null, gameConfiguration);
     }
 }

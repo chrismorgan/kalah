@@ -2,11 +2,9 @@ package com.morgan.kalah.rules;
 
 import com.morgan.kalah.exception.EmptyPitException;
 import com.morgan.kalah.model.Game;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-@Component
 public class EmptyPitRule implements Rule {
 
     private final Rule nextRule;
