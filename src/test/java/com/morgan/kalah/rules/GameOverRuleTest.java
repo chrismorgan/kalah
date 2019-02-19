@@ -16,71 +16,53 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
 @RunWith(MockitoJUnitRunner.class)
-public class CapturedSeedsRuleTest {
+public class GameOverRuleTest {
 
     @Mock
     private GameConfiguration gameConfiguration;
 
-    private CapturedSeedsRule capturedSeedsRule;
+    private GameOverRule gameOverRule;
 
     @Before
     public void setup() {
-        given(gameConfiguration.getPits()).willReturn(14);
         given(gameConfiguration.getNorthPlayerKalah()).willReturn(14);
         given(gameConfiguration.getSouthPlayerKalah()).willReturn(7);
-        capturedSeedsRule = new CapturedSeedsRule(null, gameConfiguration);
+        gameOverRule = new GameOverRule(null, gameConfiguration);
     }
 
     @Test
-    public void applyRule_nonCapturingMove_noCapture() {
+    public void applyRule_gameNotOver_passthrough() {
         //Given
         Game game = new Game();
-        game.setState(startingState());
-        game.setActivePlayer(Player.NORTH);
-        game.setLastPitPlayed(14);
-
-        //When
-        capturedSeedsRule.applyRule(game, 8);
-
-        //Then
-        assertThat(game.getState()).containsValues(6, 6, 6, 6, 6, 6, 0, 0, 1, 7, 7, 7, 7, 1);
-
-    }
-
-    @Test
-    public void applyRule_capturingMove_captureToKalah() {
-        //Given
-        Game game = new Game();
-        game.setState(startingStateCapture());
-        game.setActivePlayer(Player.NORTH);
-        game.setLastPitPlayed(12);
-
-        //When
-        capturedSeedsRule.applyRule(game, 8);
-
-        //Then
-        assertThat(game.getState().values()).containsSequence(6, 0, 0, 6, 6, 6, 0, 0, 1, 7, 7, 0, 7, 8);
-
-    }
-
-    @Test
-    public void applyRule_nonCapturingMoveOpponentsPit_captureToKalah() {
-        //Given
-        Game game = new Game();
-        game.setState(startingStateCapture());
+        game.setState(continuingState());
         game.setActivePlayer(Player.SOUTH);
-        game.setLastPitPlayed(9);
+        game.setLastPitPlayed(13);
 
         //When
-        capturedSeedsRule.applyRule(game, 3);
+        gameOverRule.applyRule(game, 8);
 
         //Then
-        assertThat(game.getState().values()).containsSequence(6, 6, 0, 6, 6, 6, 0, 0, 1, 7, 7, 1, 7, 1);
+        assertThat(game.getState().values()).containsSequence(6, 6, 6, 6, 6, 6, 0, 0, 7, 7, 7, 7, 7, 1);
 
     }
 
+    @Test
+    public void applyRule_gameOver_pitsEmptied() {
+        //Given
+        Game game = new Game();
+        game.setState(finishedState());
+        game.setActivePlayer(Player.SOUTH);
+        game.setLastPitPlayed(7);
 
-    private Map<Integer, Integer> startingState() {
+        //When
+        gameOverRule.applyRule(game, 8);
+
+        //Then
+        assertThat(game.getState().values()).containsSequence(0, 0, 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 47);
+
+    }
+
+    private Map<Integer, Integer> continuingState() {
         Map<Integer, Integer> state = new HashMap<>();
         state.put(1, 6);
         state.put(2, 6);
@@ -99,22 +81,22 @@ public class CapturedSeedsRuleTest {
         return state;
     }
 
-    private Map<Integer, Integer> startingStateCapture() {
+    private Map<Integer, Integer> finishedState() {
         Map<Integer, Integer> state = new HashMap<>();
-        state.put(1, 6);
-        state.put(2, 6);
+        state.put(1, 0);
+        state.put(2, 0);
         state.put(3, 0);
-        state.put(4, 6);
-        state.put(5, 6);
-        state.put(6, 6);
-        state.put(7, 0);
+        state.put(4, 0);
+        state.put(5, 0);
+        state.put(6, 0);
+        state.put(7, 15);
         state.put(8, 0);
-        state.put(9, 1);
+        state.put(9, 7);
         state.put(10, 7);
         state.put(11, 7);
-        state.put(12, 1);
+        state.put(12, 7);
         state.put(13, 7);
-        state.put(14, 1);
+        state.put(14, 12);
         return state;
     }
 

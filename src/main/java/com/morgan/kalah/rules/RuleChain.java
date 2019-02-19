@@ -5,6 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+/**
+ * Rule chain to apply each game rule, chained to the next rule
+ */
 @Component
 public class RuleChain {
 
@@ -38,6 +41,11 @@ public class RuleChain {
 
     @Bean
     public Rule nextPlayerRule() {
-        return new NextPlayerRule(null, gameConfiguration);
+        return new NextPlayerRule(gameOverRule(), gameConfiguration);
+    }
+
+    @Bean
+    public Rule gameOverRule() {
+        return new GameOverRule(null, gameConfiguration);
     }
 }

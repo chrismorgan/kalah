@@ -45,6 +45,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/GameState'
         '400':
+          description: Cannot play this move
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
           description: Cannot find board or pit
           content:
             application/json:

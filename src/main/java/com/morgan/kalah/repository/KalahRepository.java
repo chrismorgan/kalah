@@ -30,11 +30,6 @@ public class KalahRepository {
         return Optional.ofNullable(gameRepository.get(gameId));
     }
 
-    public Game update(Game game) {
-        gameRepository.replace(game.getId(), game);
-        return game;
-    }
-
     private String getNewGameId() {
         Long gameId = gameCounter.incrementAndGet();
         return String.valueOf(gameId);

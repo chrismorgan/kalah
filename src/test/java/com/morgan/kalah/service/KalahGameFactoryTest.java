@@ -38,7 +38,7 @@ public class KalahGameFactoryTest {
         Game game = kalahGameFactory.createGame();
 
         //Then
-        assertThat(game.getActivePlayer()).isEqualTo(Player.NORTH);
+        assertThat(game.getActivePlayer()).isEqualTo(Player.SOUTH);
         assertThat(game.getLastPitPlayed()).isEqualTo(0);
         assertThat(game.getState()).hasSize(14);
         assertThat(game.getState()).containsKeys(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14);

@@ -12,6 +12,9 @@ import java.util.stream.IntStream;
 
 import static java.util.function.Function.identity;
 
+/**
+ * Factory for creating new game objects
+ */
 @Service
 public class KalahGameFactory {
 
@@ -22,9 +25,14 @@ public class KalahGameFactory {
         this.gameConfiguration = gameConfiguration;
     }
 
+    /**
+     * Create a new game initialised with the correct state from config
+     *
+     * @return Game
+     */
     public Game createGame() {
         Game game = new Game();
-        game.setActivePlayer(Player.NORTH);
+        game.setActivePlayer(Player.SOUTH);
         Map<Integer, Integer> state = IntStream.rangeClosed(1, gameConfiguration.getPits())
                 .boxed()
                 .collect(Collectors.toMap(identity(), this::getStonesForPit));
